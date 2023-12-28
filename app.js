@@ -1,36 +1,54 @@
-const yargs = require("yargs");
-const getNotes = require("./notes.js");
+const fs = require('fs')
 
-yargs.command({
-  command: "add",
-  describe: "Add a new note.",
-  handler: function () {
-    console.log("Adding a new note!");
-  },
-});
+const getNotes = function () {
+  return 'Your notes...'
+}
 
-yargs.command({
-  command: "remove",
-  describe: "Removing a note.",
-  handler: function () {
-    console.log("Removing the note.");
-  },
-});
+const addNote = function (title, body) {
+  const notes = loadNotes()
+  const duplicateNotes = notes.filter(function (note) {
+    return notes.title === title
+  })
+  
+  if (duplicateNotes.length === 0) {
+    notes.push({
+      title: title,
+      body: body
+    })
+    saveNotes(notes)
+    console.log('New note added') 
+  } else {
+    console.log('Note title taken!')
+  }
+}
 
-yargs.command({
-  command: "list",
-  describe: "List your notes.",
-  handler: function () {
-    console.log("Listing out all notes.");
-  },
-});
+const removeNote = function (title) {
+  const notes = loadNotes()
+  notes.filter(function(e, i){
+    if (notes[i].title != title)
+    notes.push(notes[i])
+  })
+  saveNotes(notes)
+  console.log(notes)
+  }
+  
+const saveNotes = function (notes) {
+  const dataJSON = JSON.stringify(notes)
+  fs.writeFileSync('notes.json', dataJSON)
+}
 
-yargs.command({
-  command: "read",
-  describe: "Reading a note",
-  handler: function () {
-    console.log("Reading the note.");
-  },
-});
-
-console.log(yargs.argv);
+const loadNotes = function (notes) {
+  try {
+      const dataBuffer = fs.readFileSync(notes.json)
+      const dataJSON = dataBuffer.toString()
+      return JSON.parse(dataJSON)
+  } catch (e) {
+    consoloe.log('empty notes')
+    return []
+  }
+}
+module.exports = {
+  getNotes: getNotes,
+  addNote: addNote,
+  removeNote: removeNote
+}

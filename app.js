@@ -1,54 +1,61 @@
-const fs = require('fs')
+    const chalk = import('chalk')
+    const yargs = require('yargs')
+    const notes = require('./notes.js')
 
-const getNotes = function () {
-  return 'Your notes...'
-}
+    yargs.command({
+        command: 'add',
+        describe: 'Add a new note',
+        builder: {
+            title: {
+                describe: 'Note title',
+                demandOption: true,
+                type: 'string'
+            },
+            body:{
+                describe: 'Note body',
+                demandOption: true,
+                type: 'string'
+            }
 
-const addNote = function (title, body) {
-  const notes = loadNotes()
-  const duplicateNotes = notes.filter(function (note) {
-    return notes.title === title
-  })
-  
-  if (duplicateNotes.length === 0) {
-    notes.push({
-      title: title,
-      body: body
+        },
+        handler: function (argv) {
+            notes.addNote(argv.title, argv.body)
+        }
     })
-    saveNotes(notes)
-    console.log('New note added') 
-  } else {
-    console.log('Note title taken!')
-  }
-}
+    
+       yargs.command({
+        command: 'remove',
+        describe: 'Remove a  note',
+        builder: {
+            title: {
+                describe: 'Note title',
+                demandOption: true,
+                type: 'string'
+            }
+        },
+        
+        handler: function (argv) {
+            notes.removeNote(argv.title)
+        }
+    })
+    
+    yargs.command({
+        command: 'list',
+        describe: 'List yout notes',
+        handler: function () {
+            console.log('Listing out all noets')
+        }
+    })
+    
+    
+    
+        yargs.command({
+        command: 'read',
+        describe: 'Read a note',
 
-const removeNote = function (title) {
-  const notes = loadNotes()
-  notes.filter(function(e, i){
-    if (notes[i].title != title)
-    notes.push(notes[i])
-  })
-  saveNotes(notes)
-  console.log(notes)
-  }
-  
-const saveNotes = function (notes) {
-  const dataJSON = JSON.stringify(notes)
-  fs.writeFileSync('notes.json', dataJSON)
-}
-
-const loadNotes = function (notes) {
-  try {
-      const dataBuffer = fs.readFileSync(notes.json)
-      const dataJSON = dataBuffer.toString()
-      return JSON.parse(dataJSON)
-  } catch (e) {
-    consoloe.log('empty notes')
-    return []
-  }
-}
-module.exports = {
-  getNotes: getNotes,
-  addNote: addNote,
-  removeNote: removeNote
-}
+        handler: function (argv) {
+            console.log('Adding a new note', argv)
+        }
+    })
+    
+    yargs.parse()

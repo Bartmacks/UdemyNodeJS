@@ -1,8 +1,5 @@
-const fs = require('fs')
+const fs = require('file-system')
 
-const getNotes = function () {
-  return 'Your notes...'
-}
 
 const addNote = function (title, body) {
   const notes = loadNotes()
@@ -43,12 +40,11 @@ const loadNotes = function (notes) {
       const dataJSON = dataBuffer.toString()
       return JSON.parse(dataJSON)
   } catch (e) {
-    consoloe.log('empty notes')
+    console.log('empty notes')
     return []
   }
 }
 module.exports = {
-  getNotes: getNotes,
-  addNote: addNote,
-  removeNote: removeNote
+  addNote : addNote,
+  removeNote : removeNote
 }

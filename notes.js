@@ -1,8 +1,6 @@
-const chalk = import('chalk')
-const yargs = require('yargs')
 const fs = require('file-system')
 
-getNotes = () => {
+const getNotes = () => {
   return 'Your notes...'
 }
 
@@ -45,7 +43,6 @@ const loadNotes = (notes) => {
   }
 }
 module.exports = {
-  getNotes: getNotes,
-  addNote: addNote,
-  removeNote: removeNote
+  addNote : addNote,
+  removeNote : removeNote
 }

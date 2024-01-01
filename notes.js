@@ -1,42 +1,40 @@
 const fs = require('file-system')
 
+const getNotes = () => {
+  return 'Your notes...'
+}
 
-const addNote = function (title, body) {
+const addNote = (title, body) => {
   const notes = loadNotes()
-  const duplicateNotes = notes.filter(function (note) {
-    return notes.title === title
-  })
+  const duplicateNotes = notes.filter ((note) => note.title === title)
   
   if (duplicateNotes.length === 0) {
     notes.push({
       title: title,
       body: body
     })
+    console.log(notes.toString())
     saveNotes(notes)
     console.log('New note added') 
   } else {
     console.log('Note title taken!')
   }
 }
-
-const removeNote = function (title) {
+const removeNote = (title) => {
   const notes = loadNotes()
-  notes.filter(function(e, i){
-    if (notes[i].title != title)
-    notes.push(notes[i])
-  })
-  saveNotes(notes)
-  console.log(notes)
+  const uniqueNotes = notes.filter((note) => note.title !== title)
+  console.log('unique notes: ' + uniqueNotes)
+  saveNotes(uniqueNotes)
   }
   
-const saveNotes = function (notes) {
+const saveNotes = (notes) => {
   const dataJSON = JSON.stringify(notes)
   fs.writeFileSync('notes.json', dataJSON)
 }
 
-const loadNotes = function (notes) {
+const loadNotes = (notes) => {
   try {
-      const dataBuffer = fs.readFileSync(notes.json)
+      const dataBuffer = fs.readFileSync("notes.json")
       const dataJSON = dataBuffer.toString()
       return JSON.parse(dataJSON)
   } catch (e) {

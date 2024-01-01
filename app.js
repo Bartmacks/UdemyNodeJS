@@ -1,7 +1,8 @@
-    const yargs = require('yargs')
-    const notes = require('./notes.js')
+const chalk = import('chalk')
+const yargs = require('yargs')
+const notes = require('./notes.js')
 
-    yargs.command({
+yargs.command({
         command: 'add',
         describe: 'Add a new note',
         builder: {

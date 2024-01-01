@@ -1,8 +1,6 @@
-const chalk = import('chalk')
-const yargs = require('yargs')
 const fs = require('file-system')
 
-getNotes = () => {
+const getNotes = () => {
   return 'Your notes...'
 }
 
